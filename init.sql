@@ -14,6 +14,16 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at  DATETIME
 );
 
+-- Users table (for reference — Hibernate auto-creates this)
+CREATE TABLE IF NOT EXISTS users (
+    id          BIGINT          AUTO_INCREMENT PRIMARY KEY,
+    username    VARCHAR(255)    NOT NULL UNIQUE,
+    email       VARCHAR(255)    NOT NULL UNIQUE,
+    password    VARCHAR(255)    NOT NULL,
+    role        VARCHAR(255)    NOT NULL DEFAULT 'ROLE_USER',
+    created_at  DATETIME
+);
+
 -- Mock data (25 products across categories)
 INSERT INTO products (name, description, price, category, stock, created_at, updated_at) VALUES
 ('Wireless Mouse',       'Ergonomic wireless mouse with USB receiver',           29.99,  'Electronics',   120, NOW(), NOW()),

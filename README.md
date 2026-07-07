@@ -34,15 +34,89 @@ spring.datasource.password=root
 ./mvnw spring-boot:run
 ```
 
-App starts at **`http://localhost:8080`**. Hibernate auto-creates the `products` table.
+App starts at **`http://localhost:8080`**. Hibernate auto-creates the `products` and `users` tables.
+
+---
+
+## Authentication
+
+All product endpoints require a valid JWT in the `Authorization` header:
+
+```
+Authorization: Bearer <token>
+```
+
+Obtain a token by registering or logging in (see auth endpoints below).
 
 ---
 
 ## API Endpoints
 
-### Base URL: `http://localhost:8080/api/products`
+### Base URL: `http://localhost:8080/api`
 
 ---
+
+## Auth Endpoints
+
+### Register
+
+```
+POST /api/auth/register
+```
+
+**Body (JSON):**
+```json
+{
+  "username": "john",
+  "email": "john@test.com",
+  "password": "password123"
+}
+```
+
+**Response:** `201 Created`
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "username": "john",
+  "expiresIn": 86400000
+}
+```
+
+**Errors:** `400 Bad Request` — username/email already taken or validation fails.
+
+---
+
+### Login
+
+```
+POST /api/auth/login
+```
+
+**Body (JSON):**
+```json
+{
+  "username": "john",
+  "password": "password123"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "username": "john",
+  "expiresIn": 86400000
+}
+```
+
+**Error:** `401 Unauthorized` — invalid username or password.
+
+---
+
+## Product Endpoints
+
+Base URL: `http://localhost:8080/api/products`  
+All endpoints require header: `Authorization: Bearer <token>`
 
 ### Create Product
 
